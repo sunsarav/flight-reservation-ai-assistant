@@ -66,8 +66,7 @@ function AllFlightsPage({ view }: AllFlightsPageProps) {
  
   const loadFlights = useCallback(async () => {
     setLoading(true)
-    setMessage(null)
- 
+     
     try {
       const data = view === 'available' ? await getAvailableFlights() : await getAllFlights()
       setFlights(data)
@@ -176,7 +175,10 @@ function AllFlightsPage({ view }: AllFlightsPageProps) {
         description={getDescription(view)}
         loading={loading}
         working={working}
-        onRefresh={() => void loadFlights()}
+        onRefresh={() => {
+          setMessage(null)
+          void loadFlights()
+        }}
       />
  
       <StatusMessage message={message} />
