@@ -28,22 +28,22 @@ class BookFlightToolTest {
     void execute_ShouldBookFlight() {
 
         // Arrange
-        bookFlightTool.flightId = 1L;
-        bookFlightTool.passengerName = "John Smith";
-        bookFlightTool.passengerEmail = "john@example.com";
+        Long flightId = 1L;
+        String passengerName = "John Smith";
+        String passengerEmail = "john@example.com";
 
         BookFlightRequestDTO request =
                 new BookFlightRequestDTO(
-                        "John Smith",
-                        "john@example.com"
+                        passengerName,
+                        passengerEmail
                 );
 
         FlightBookingDTO expectedBooking =
                 new FlightBookingDTO(
                         1L,
                         "SK123",
-                        "John Smith",
-                        "john@example.com",
+                        passengerName,
+                        passengerEmail,
                         LocalDateTime.now().plusDays(1),
                         LocalDateTime.now().plusDays(1).plusHours(2),
                         "BOOKED",
@@ -53,22 +53,23 @@ class BookFlightToolTest {
 
         when(
                 flightBookingService.bookFlight(
-                        eq(1L),
+                        eq(flightId),
                         eq(request)
                 )
         ).thenReturn(expectedBooking);
 
         // Act
         FlightBookingDTO result =
-                bookFlightTool.execute();
+                bookFlightTool.execute(
+                        flightId,
+                        passengerName,
+                        passengerEmail
+                );
 
         // Assert
         assertEquals(1L, result.id());
         assertEquals("John Smith", result.passengerName());
-        assertEquals(
-                "john@example.com",
-                result.passengerEmail()
-        );
+        assertEquals("john@example.com", result.passengerEmail());
         assertEquals("BOOKED", result.status());
     }
 }

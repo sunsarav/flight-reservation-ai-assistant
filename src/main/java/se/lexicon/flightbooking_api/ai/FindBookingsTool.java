@@ -1,8 +1,9 @@
 package se.lexicon.flightbooking_api.ai;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 import se.lexicon.flightbooking_api.dto.FlightBookingDTO;
 import se.lexicon.flightbooking_api.service.FlightBookingService;
@@ -18,12 +19,23 @@ public class FindBookingsTool {
 
     private final FlightBookingService flightBookingService;
 
-    @JsonPropertyDescription(
-            "The passenger email address used when making the booking."
-    )
-    public String email;
+    @Tool(
+            name = "findBookings",
+            description = """
+                    Finds all active flight bookings for a passenger.
 
-    public List<FlightBookingDTO> execute() {
+                    The passenger email address is required.
+                    """
+    )
+    public List<FlightBookingDTO> execute(
+
+            @ToolParam(
+                    description = "The passenger email address used when making the booking."
+            )
+            String email
+
+    ) {
+
         return flightBookingService.findBookingsByEmail(email);
     }
 }

@@ -23,20 +23,23 @@ class CancelFlightToolTest {
     void execute_ShouldCancelFlight() {
 
         // Arrange
-        cancelFlightTool.flightId = 1L;
-        cancelFlightTool.passengerEmail =
-                "john@example.com";
+        Long flightId = 21L;
+        String passengerEmail = "john@example.com";
 
         // Act
         String result =
-                cancelFlightTool.execute();
+                cancelFlightTool.execute(
+                        flightId,
+                        passengerEmail
+                );
 
         // Assert
-        verify(flightBookingService)
-                .cancelFlight(
-                        1L,
-                        "john@example.com"
-                );
+        verify(
+                flightBookingService
+        ).cancelFlight(
+                flightId,
+                passengerEmail
+        );
 
         assertEquals(
                 "Flight booking cancelled successfully.",

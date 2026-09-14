@@ -1,31 +1,44 @@
 package se.lexicon.flightbooking_api.ai;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 import se.lexicon.flightbooking_api.service.FlightBookingService;
 
 @Component
 @RequiredArgsConstructor
 @JsonClassDescription(
-        "Cancels a flight booking. Use this tool only when the flight ID and passenger email are known."
+        "Cancels a flight booking for a passenger."
 )
 public class CancelFlightTool {
 
     private final FlightBookingService flightBookingService;
 
-    @JsonPropertyDescription(
-            "The ID of the flight booking to cancel."
-    )
-    public Long flightId;
+    @Tool(
+            name = "cancelFlight",
+            description = """
+                    Cancels a booked flight.
 
-    @JsonPropertyDescription(
-            "The email address associated with the booking."
+                    The flightId must be the numeric database ID of the booked flight.
+                    The passenger email must match the email used for the booking.
+                    Both values are required.
+                    """
     )
-    public String passengerEmail;
+    public String execute(
 
-    public String execute() {
+            @ToolParam(
+                    description = "The numeric database ID of the booked flight to cancel."
+            )
+            Long flightId,
+
+            @ToolParam(
+                    description = "The email address associated with the booking."
+            )
+            String passengerEmail
+
+    ) {
 
         flightBookingService.cancelFlight(
                 flightId,

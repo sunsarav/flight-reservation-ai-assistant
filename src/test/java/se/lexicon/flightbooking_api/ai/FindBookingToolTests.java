@@ -27,7 +27,7 @@ class FindBookingsToolTest {
     void execute_ShouldReturnBookingsByEmail() {
 
         // Arrange
-        findBookingsTool.email = "john@example.com";
+        String email = "john@example.com";
 
         FlightBookingDTO booking =
                 new FlightBookingDTO(
@@ -43,14 +43,12 @@ class FindBookingsToolTest {
                 );
 
         when(
-                flightBookingService.findBookingsByEmail(
-                        "john@example.com"
-                )
+                flightBookingService.findBookingsByEmail(email)
         ).thenReturn(List.of(booking));
 
         // Act
         List<FlightBookingDTO> result =
-                findBookingsTool.execute();
+                findBookingsTool.execute(email);
 
         // Assert
         assertEquals(1, result.size());

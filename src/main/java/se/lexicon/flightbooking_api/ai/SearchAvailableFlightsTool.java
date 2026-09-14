@@ -1,6 +1,7 @@
 package se.lexicon.flightbooking_api.ai;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 import se.lexicon.flightbooking_api.dto.AvailableFlightDTO;
 import se.lexicon.flightbooking_api.service.FlightBookingService;
@@ -20,6 +21,11 @@ public class SearchAvailableFlightsTool {
     ) {
         this.flightBookingService = flightBookingService;
     }
+
+    @Tool(
+            name = "searchAvailableFlights",
+            description = "Returns all flights that are currently available for booking."
+    )
 
     public List<AvailableFlightDTO> execute() {
         return flightBookingService.findAvailableFlights();
