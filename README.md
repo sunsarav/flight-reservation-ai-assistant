@@ -1,80 +1,94 @@
-![Lexicon Logo](https://lexicongruppen.se/media/wi5hphtd/lexicon-logo.svg)
+# ✈️ Flight Reservation AI Assistant
 
-# Flight Reservation UI - Project Test
+A Spring Boot flight reservation system, extended with an AI assistant that lets users search, book, and cancel flights through natural conversation.
 
-This project is based on an existing Spring Boot backend that manages flights and bookings.
+---
 
-Your task is to build a frontend user interface for the Flight Reservation System by consuming the provided REST API.
+## Architecture
 
-## Project Goal
+```
+Flight Reservation AI Assistant
+│
+├── ReactJS + TypeScript — Chatbot UI
+├── Spring Boot REST API — Flight Controller, AI Chat Controller
+├── AI Assistant — ChatClient, System Message, Chat Memory, Tools
+├── Service Layer — Flight Booking Service
+├── Repository Layer — Flight Booking Repository
+└── MySQL Database
+```
 
-Create a clean and usable flight booking interface where a user can:
+**Stack** — Java · Spring Boot · Spring AI · OpenAI · Spring Data JPA · MySQL · ReactJS · TypeScript · Vite · JUnit 5 · Mockito
 
-- View all flights
-- View only available flights
-- Book a flight
-- Search for bookings by email
-- Cancel an existing booking
+---
 
-## Frontend Requirements
+## What It Does
 
-Build the UI using:
+**Reservation system**
+View all flights, view available flights, book by name and email, cancel by email, check bookings by email.
 
-- React
-- TypeScript
-- React Router
-- `lucide-react`
-- Functional components
-- React hooks
+**AI assistant**
+Understands natural-language requests and carries them out — searching, booking, and cancelling flights through conversation, guided by a system message that defines its role. It keeps a limited in-memory chat history (per `chatId`) for context and asks for clarification when details are missing.
 
-## Assignment Requirements
+**Chatbot UI**
+React frontend where users chat with the assistant and see responses in real time, continuing the same conversation via `chatId`.
 
-Your solution must include the following features.
+---
 
-### 1. Flights View
+## AI Tools
 
-Create a component that fetches and displays all flights from the API.
+The assistant acts through Spring AI tool calling — it never touches the database directly, only the existing service layer, via `@Tool` / `defaultTools(...)`:
 
-### 2. Available Flights View
+**searchAllFlights** → full flight list
+**searchAvailableFlights** → flights with availability
+**bookFlight** → books a flight by flight ID, name, and email
+**findBookings** → looks up bookings by email
+**cancelFlight** → cancels a booking by flight ID and email
 
-Allow the user to see only flights that are currently available for booking.
+---
 
-### 3. Booking Flow
+## Requirements
 
-Make it possible for the user to book a flight from the UI.
+Java 25 · Maven · MySQL · Node.js · npm · an OpenAI API key
 
-The booking form should collect:
+## Configuration
 
-- Passenger name
-- Passenger email
+```bash
+OPENAI_API_KEY=your-openai-api-key
+MYSQL_PASSWORD=your-mysql-password
+```
 
-After a successful booking, the user should receive clear feedback in the interface.
+---
 
-### 4. (OPTIONAL) Booking Lookup
+## Running the Backend
 
-Provide a way for the user to enter an email address and view all bookings connected to that email.
+```bash
+git clone <repository-url>
+cd <project-folder>
+```
 
-### 5.  (OPTIONAL) Cancel Booking
+Make sure MySQL is running, set the environment variables above, then run the Spring Boot application. It starts on `http://localhost:8080`.
 
-Allow the user to cancel a booking by using:
+## Running the Frontend
 
-- Flight ID
-- Passenger email
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## API Endpoints
+Starts on `http://localhost:5173`, and talks to the backend at:
 
-Use the backend API to power the interface.
+```
+GET /api/v1/ai/chat?chatId=...&message=...
+```
 
-- `GET /api/flights` - get all flights
-- `GET /api/flights/available` - get available flights
-- `POST /api/flights/{flightId}/book` - book a flight
-- `GET /api/flights/bookings?email={email}` - get bookings by email
-- `DELETE /api/flights/{flightId}/cancel?email={email}` - cancel a booking
+---
 
-## Getting Started
+## API Docs
 
-1. Run the backend application
-2. Open the API documentation at `http://localhost:8080/swagger-ui.html`
-3. Review the available endpoints
-4. Build the frontend UI
-5. Connect your components to the API
+Swagger UI: `http://localhost:8080/swagger-ui.html`
+OpenAPI spec: `http://localhost:8080/v3/api-docs`
+
+## Testing
+
+JUnit 5 and Mockito cover core booking flows and tool-calling behavior, with the AI tools mocked against the service layer for fast local runs.
