@@ -1,6 +1,7 @@
 import { Navigate, NavLink, Route, Routes } from 'react-router'
 import { CalendarCheck, Plane, SearchCheck } from 'lucide-react'
 import AllFlightsPage from './pages/AllFlightsPage'
+import ChatComponent from './components/ChatComponent';
 import './App.css'
  
 function App() {
@@ -12,6 +13,7 @@ function App() {
           <div>
             <span>Flight Reservation</span>
             <strong>Booking Desk</strong>
+            <ChatComponent />
           </div>
         </div>
  
