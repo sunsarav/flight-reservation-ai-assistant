@@ -20,7 +20,20 @@ public class SearchAllFlightsTool {
 
     @Tool(
             name = "searchAllFlights",
-            description = "Returns all flights in the flight reservation system."
+            description = """
+                    Returns ALL flights in the system.
+
+                    The result can include both AVAILABLE and BOOKED flights.
+
+                    Use this tool when the user explicitly asks for:
+                    - all flights
+                    - the complete flight list
+                    - every flight
+                    - the full list of flights
+
+                    Do NOT use this tool when the user specifically asks
+                    only for available or bookable flights.
+                    """
     )
     public List<FlightListDTO> execute() {
         return flightBookingService.findAll();

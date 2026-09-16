@@ -24,7 +24,17 @@ public class SearchAvailableFlightsTool {
 
     @Tool(
             name = "searchAvailableFlights",
-            description = "Returns all flights that are currently available for booking."
+            description = """
+                    Returns ONLY flights whose current status is AVAILABLE.
+
+                    Use this tool when the user wants to:
+                    - see available flights
+                    - find flights they can book
+                    - search for bookable flights
+
+                    Do NOT use this tool when the user asks for all flights,
+                    including booked flights.
+                    """
     )
 
     public List<AvailableFlightDTO> execute() {
