@@ -153,9 +153,12 @@ body {
 .messages-container {
   flex: 1;
 
+  min-height: 0;
+
   padding: 25px;
 
   overflow-y: auto;
+  overflow-x: hidden;
 
   background:
           radial-gradient(
@@ -163,6 +166,8 @@ body {
                   #eef7ff,
                   transparent 40%
           );
+
+  scroll-behavior: smooth;
 }
 
 
@@ -232,6 +237,9 @@ body {
   line-height: 1.5;
 
   word-wrap: break-word;
+  overflow-wrap: anywhere;
+
+  white-space: pre-wrap;
 }
 
 .message-bubble.assistant {
@@ -297,7 +305,6 @@ body {
 }
 
 @keyframes typing {
-
   0% {
     opacity: 0.2;
   }
@@ -330,6 +337,8 @@ body {
 
 .input-section input {
   flex: 1;
+
+  min-width: 0;
 
   padding: 12px 14px;
 
@@ -377,6 +386,10 @@ body {
   font-weight: bold;
 
   cursor: pointer;
+
+  transition:
+          transform 0.15s ease,
+          opacity 0.15s ease;
 }
 
 .send-button:hover:not(:disabled) {

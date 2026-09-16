@@ -17,6 +17,9 @@ const ChatComponent: React.FC = () => {
 
     /*
      * A unique ID for this conversation.
+     *
+     * The same chatId is used for the entire React component session,
+     * allowing Spring AI to keep the conversation history.
      */
     const [chatId] = useState<string>(() => crypto.randomUUID());
 
@@ -32,30 +35,44 @@ const ChatComponent: React.FC = () => {
         {
             id: 1,
             sender: 'assistant',
-            text: 'Hello! 👋 I am your Flight Reservation Assistant. I can help you search for flights, make bookings, find your bookings, and cancel bookings.'
+            text:
+                'Hello! 👋 I am your Flight Reservation Assistant. ' +
+                'I can help you search for flights, make bookings, ' +
+                'find your bookings, and cancel bookings.'
         }
     ]);
 
     /*
-     * Reference to the bottom of the messages area.
-     * We will use this for automatic scrolling.
+     * Reference to the actual scrollable messages container.
+     *
+     * IMPORTANT:
+     * We scroll this element itself.
+     * We do NOT use scrollIntoView(), because that can scroll
+     * the entire webpage instead of only the chatbot.
      */
-    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const chatMessagesRef = useRef<HTMLDivElement>(null);
 
     /*
      * Reference to the input field.
-     * We use this to focus the input after sending.
+     *
+     * We use this to focus the input after sending a message.
      */
     const inputRef = useRef<HTMLInputElement | null>(null);
 
 
     /*
-     * Automatically scroll to the newest message.
+     * Automatically scroll the CHAT MESSAGE AREA
+     * to the newest message.
+     *
+     * This keeps the webpage itself in the same position.
      */
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({
-            behavior: 'smooth'
-        });
+        const messagesContainer = chatMessagesRef.current;
+
+        if (messagesContainer) {
+            messagesContainer.scrollTop =
+                messagesContainer.scrollHeight;
+        }
     }, [messages, loading]);
 
 
@@ -68,6 +85,7 @@ const ChatComponent: React.FC = () => {
 
         /*
          * Do not send empty messages.
+         * Do not allow another request while loading.
          */
         if (!trimmedMessage || loading) {
             return;
@@ -90,7 +108,7 @@ const ChatComponent: React.FC = () => {
 
 
         /*
-         * Clear the input field.
+         * Clear the input field immediately.
          */
         setMessage('');
 
@@ -101,12 +119,18 @@ const ChatComponent: React.FC = () => {
         setLoading(true);
 
 
+        /*
+         * Encode the values before adding them to the URL.
+         */
         const encodedChatId = encodeURIComponent(chatId);
 
         const encodedMessage =
             encodeURIComponent(trimmedMessage);
 
 
+        /*
+         * Spring Boot AI endpoint.
+         */
         const url =
             `http://localhost:8080/api/v1/ai/chat` +
             `?chatId=${encodedChatId}` +
@@ -128,8 +152,8 @@ const ChatComponent: React.FC = () => {
 
 
             /*
-             * Spring Boot returns a String,
-             * so we use response.text().
+             * Spring Boot returns the assistant response
+             * as a String, so response.text() is correct.
              */
             const responseText = await response.text();
 
@@ -153,7 +177,8 @@ const ChatComponent: React.FC = () => {
                         id: Date.now() + 1,
                         sender: 'error',
                         text:
-                            'Sorry, something went wrong while contacting the flight service. ' +
+                            'Sorry, something went wrong while contacting ' +
+                            'the flight service. ' +
                             `Server status: ${response.status}`
                     }
                 ]);
@@ -216,6 +241,8 @@ const ChatComponent: React.FC = () => {
 
     /*
      * Handle keyboard input.
+     *
+     * Pressing Enter sends the message.
      */
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLInputElement>
@@ -233,7 +260,12 @@ const ChatComponent: React.FC = () => {
 
 
     /*
-     * Clear the current conversation.
+     * Clear the current conversation displayed in the UI.
+     *
+     * NOTE:
+     * The existing Spring AI conversation memory is associated
+     * with the current chatId. This button resets the visible
+     * frontend messages and input.
      */
     const clearChat = (): void => {
 
@@ -242,11 +274,13 @@ const ChatComponent: React.FC = () => {
                 id: Date.now(),
                 sender: 'assistant',
                 text:
-                    'Hello! 👋 I am your Flight Reservation Assistant. How can I help you today?'
+                    'Hello! 👋 I am your Flight Reservation Assistant. ' +
+                    'How can I help you today?'
             }
         ]);
 
         setMessage('');
+
 
         setTimeout(() => {
             inputRef.current?.focus();
@@ -283,6 +317,7 @@ const ChatComponent: React.FC = () => {
 
 
                 <button
+                    type="button"
                     className="clear-button"
                     onClick={clearChat}
                     disabled={loading}
@@ -297,7 +332,10 @@ const ChatComponent: React.FC = () => {
                 Chat messages
             ========================= */}
 
-            <div className="messages-container">
+            <div
+                ref={chatMessagesRef}
+                className="messages-container"
+            >
 
                 {messages.map((chatMessage) => (
 
@@ -361,10 +399,6 @@ const ChatComponent: React.FC = () => {
 
                 )}
 
-
-                {/* Automatic scroll target */}
-                <div ref={messagesEndRef} />
-
             </div>
 
 
@@ -384,10 +418,12 @@ const ChatComponent: React.FC = () => {
                     onKeyDown={handleKeyDown}
                     placeholder="Ask about flights, bookings, or cancellations..."
                     disabled={loading}
+                    aria-label="Chat message"
                 />
 
 
                 <button
+                    type="button"
                     className="send-button"
                     onClick={sendMessageToBackend}
                     disabled={
