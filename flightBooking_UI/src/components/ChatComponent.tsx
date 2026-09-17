@@ -10,239 +10,238 @@ interface ChatMessage {
 
 const ChatComponent: React.FC = () => {
 
-    /*
-     * The user's current input.
-     */
     const [message, setMessage] = useState<string>('');
 
     /*
-     * A unique ID for this conversation.
+     * One conversation ID for this chat session.
      *
-     * The same chatId is used for the entire React component session,
-     * allowing Spring AI to keep the conversation history.
+     * Spring AI uses this ID to maintain the conversation
+     * memory on the backend.
      */
-    const [chatId] = useState<string>(() => crypto.randomUUID());
+    const [chatId] = useState<string>(
+        () => crypto.randomUUID()
+    );
 
-    /*
-     * Shows whether we are waiting for Spring Boot.
-     */
     const [loading, setLoading] = useState<boolean>(false);
 
-    /*
-     * Stores all messages displayed in the chat.
-     */
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             id: 1,
             sender: 'assistant',
             text:
-                'Hello! 👋 I am your Flight Reservation Assistant. ' +
+                'Hello! 👋 I am SkyMate, your personal flight assistant. ' +
                 'I can help you search for flights, make bookings, ' +
                 'find your bookings, and cancel bookings.'
         }
     ]);
 
     /*
-     * Reference to the actual scrollable messages container.
-     *
      * IMPORTANT:
-     * We scroll this element itself.
-     * We do NOT use scrollIntoView(), because that can scroll
-     * the entire webpage instead of only the chatbot.
+     *
+     * This is the actual scrollable chat container.
+     * We scroll ONLY this element.
+     *
+     * We do NOT use scrollIntoView(),
+     * because that can move the entire webpage.
      */
-    const chatMessagesRef = useRef<HTMLDivElement>(null);
+    const chatMessagesRef =
+        useRef<HTMLDivElement>(null);
+
+    const inputRef =
+        useRef<HTMLInputElement | null>(null);
+
 
     /*
-     * Reference to the input field.
-     *
-     * We use this to focus the input after sending a message.
-     */
-    const inputRef = useRef<HTMLInputElement | null>(null);
-
-
-    /*
-     * Automatically scroll the CHAT MESSAGE AREA
-     * to the newest message.
-     *
-     * This keeps the webpage itself in the same position.
+     * Scroll only the chat messages area
+     * whenever a new message arrives.
      */
     useEffect(() => {
-        const messagesContainer = chatMessagesRef.current;
+
+        const messagesContainer =
+            chatMessagesRef.current;
 
         if (messagesContainer) {
+
             messagesContainer.scrollTop =
                 messagesContainer.scrollHeight;
         }
+
     }, [messages, loading]);
 
 
     /*
-     * Sends the user's message to Spring Boot.
+     * Send message to Spring Boot.
      */
-    const sendMessageToBackend = async (): Promise<void> => {
+    const sendMessageToBackend =
+        async (): Promise<void> => {
 
-        const trimmedMessage = message.trim();
+            const trimmedMessage =
+                message.trim();
 
-        /*
-         * Do not send empty messages.
-         * Do not allow another request while loading.
-         */
-        if (!trimmedMessage || loading) {
-            return;
-        }
-
-
-        /*
-         * Immediately display the user's message.
-         */
-        const userMessage: ChatMessage = {
-            id: Date.now(),
-            sender: 'user',
-            text: trimmedMessage
-        };
-
-        setMessages((previousMessages) => [
-            ...previousMessages,
-            userMessage
-        ]);
-
-
-        /*
-         * Clear the input field immediately.
-         */
-        setMessage('');
-
-
-        /*
-         * Show loading state.
-         */
-        setLoading(true);
-
-
-        /*
-         * Encode the values before adding them to the URL.
-         */
-        const encodedChatId = encodeURIComponent(chatId);
-
-        const encodedMessage =
-            encodeURIComponent(trimmedMessage);
-
-
-        /*
-         * Spring Boot AI endpoint.
-         */
-        const url =
-            `http://localhost:8080/api/v1/ai/chat` +
-            `?chatId=${encodedChatId}` +
-            `&message=${encodedMessage}`;
-
-
-        try {
-
-            console.log(`Sending request to: ${url}`);
-
-
-            const response = await fetch(url);
-
-
-            console.log(
-                'Response Status:',
-                response.status
-            );
-
-
-            /*
-             * Spring Boot returns the assistant response
-             * as a String, so response.text() is correct.
-             */
-            const responseText = await response.text();
-
-
-            /*
-             * If Spring returns an error status,
-             * show a friendly error message.
-             */
-            if (!response.ok) {
-
-                console.error(
-                    'Backend error:',
-                    response.status,
-                    responseText
-                );
-
-
-                setMessages((previousMessages) => [
-                    ...previousMessages,
-                    {
-                        id: Date.now() + 1,
-                        sender: 'error',
-                        text:
-                            'Sorry, something went wrong while contacting ' +
-                            'the flight service. ' +
-                            `Server status: ${response.status}`
-                    }
-                ]);
-
+            if (
+                !trimmedMessage ||
+                loading
+            ) {
                 return;
             }
 
 
             /*
-             * Display the assistant's response.
+             * Display user's message immediately.
              */
-            setMessages((previousMessages) => [
-                ...previousMessages,
-                {
-                    id: Date.now() + 1,
-                    sender: 'assistant',
-                    text: responseText
-                }
-            ]);
+            const userMessage: ChatMessage = {
+                id: Date.now(),
+                sender: 'user',
+                text: trimmedMessage
+            };
 
-        } catch (error) {
-
-            console.error(
-                'Connection failed:',
-                error
+            setMessages(
+                previousMessages => [
+                    ...previousMessages,
+                    userMessage
+                ]
             );
 
 
+            setMessage('');
+
+            setLoading(true);
+
+
             /*
-             * Display a friendly connection error.
+             * Encode URL parameters.
              */
-            setMessages((previousMessages) => [
-                ...previousMessages,
-                {
-                    id: Date.now() + 1,
-                    sender: 'error',
-                    text:
-                        'I could not connect to the flight service. ' +
-                        'Please make sure the Spring Boot application is running.'
+            const encodedChatId =
+                encodeURIComponent(chatId);
+
+            const encodedMessage =
+                encodeURIComponent(trimmedMessage);
+
+
+            /*
+             * Spring Boot AI endpoint.
+             */
+            const url =
+                `http://localhost:8080/api/v1/ai/chat` +
+                `?chatId=${encodedChatId}` +
+                `&message=${encodedMessage}`;
+
+
+            try {
+
+                console.log(
+                    `Sending request to: ${url}`
+                );
+
+
+                const response =
+                    await fetch(url);
+
+
+                console.log(
+                    'Response Status:',
+                    response.status
+                );
+
+
+                const responseText =
+                    await response.text();
+
+
+                /*
+                 * Handle backend errors.
+                 */
+                if (!response.ok) {
+
+                    console.error(
+                        'Backend error:',
+                        response.status,
+                        responseText
+                    );
+
+
+                    setMessages(
+                        previousMessages => [
+                            ...previousMessages,
+                            {
+                                id:
+                                    Date.now() + 1,
+
+                                sender: 'error',
+
+                                text:
+                                    'Sorry, something went wrong ' +
+                                    'while contacting the flight service. ' +
+                                    `Server status: ${response.status}`
+                            }
+                        ]
+                    );
+
+                    return;
                 }
-            ]);
-
-        } finally {
-
-            /*
-             * Stop loading state.
-             */
-            setLoading(false);
 
 
-            /*
-             * Put the cursor back into the input.
-             */
-            setTimeout(() => {
-                inputRef.current?.focus();
-            }, 100);
-        }
-    };
+                /*
+                 * Display assistant response.
+                 */
+                setMessages(
+                    previousMessages => [
+                        ...previousMessages,
+                        {
+                            id:
+                                Date.now() + 1,
+
+                            sender: 'assistant',
+
+                            text: responseText
+                        }
+                    ]
+                );
+
+            } catch (error) {
+
+                console.error(
+                    'Connection failed:',
+                    error
+                );
+
+
+                setMessages(
+                    previousMessages => [
+                        ...previousMessages,
+                        {
+                            id:
+                                Date.now() + 1,
+
+                            sender: 'error',
+
+                            text:
+                                'I could not connect to the flight service. ' +
+                                'Please make sure the Spring Boot application ' +
+                                'is running.'
+                        }
+                    ]
+                );
+
+            } finally {
+
+                setLoading(false);
+
+
+                /*
+                 * Return focus to input.
+                 */
+                setTimeout(() => {
+
+                    inputRef.current?.focus();
+
+                }, 100);
+            }
+        };
 
 
     /*
-     * Handle keyboard input.
-     *
-     * Pressing Enter sends the message.
+     * Press Enter to send.
      */
     const handleKeyDown = (
         event: React.KeyboardEvent<HTMLInputElement>
@@ -252,6 +251,7 @@ const ChatComponent: React.FC = () => {
             event.key === 'Enter' &&
             !event.shiftKey
         ) {
+
             event.preventDefault();
 
             sendMessageToBackend();
@@ -260,21 +260,22 @@ const ChatComponent: React.FC = () => {
 
 
     /*
-     * Clear the current conversation displayed in the UI.
+     * Clear visible chat messages.
      *
-     * NOTE:
-     * The existing Spring AI conversation memory is associated
-     * with the current chatId. This button resets the visible
-     * frontend messages and input.
+     * The existing chatId remains unchanged,
+     * so the Spring AI server-side memory also remains
+     * associated with the same conversation.
      */
     const clearChat = (): void => {
 
         setMessages([
             {
                 id: Date.now(),
+
                 sender: 'assistant',
+
                 text:
-                    'Hello! 👋 I am your Flight Reservation Assistant. ' +
+                    'Hello! 👋 I am SkyMate, your personal flight assistant. ' +
                     'How can I help you today?'
             }
         ]);
@@ -283,7 +284,9 @@ const ChatComponent: React.FC = () => {
 
 
         setTimeout(() => {
+
             inputRef.current?.focus();
+
         }, 100);
     };
 
@@ -292,7 +295,7 @@ const ChatComponent: React.FC = () => {
         <div className="chat-app">
 
             {/* =========================
-                Header
+                CHAT HEADER
             ========================= */}
 
             <header className="chat-header">
@@ -304,13 +307,15 @@ const ChatComponent: React.FC = () => {
                     </div>
 
                     <div>
+
                         <h1>
-                            Flight Reservation Assistant
+                            SkyMate
                         </h1>
 
                         <p>
-                            Your personal flight assistant
+                            Your Personal Flight Assistant
                         </p>
+
                     </div>
 
                 </div>
@@ -321,6 +326,7 @@ const ChatComponent: React.FC = () => {
                     className="clear-button"
                     onClick={clearChat}
                     disabled={loading}
+                    aria-label="Clear chat"
                 >
                     🧹 Clear Chat
                 </button>
@@ -329,7 +335,7 @@ const ChatComponent: React.FC = () => {
 
 
             {/* =========================
-                Chat messages
+                CHAT MESSAGES
             ========================= */}
 
             <div
@@ -337,40 +343,50 @@ const ChatComponent: React.FC = () => {
                 className="messages-container"
             >
 
-                {messages.map((chatMessage) => (
-
-                    <div
-                        key={chatMessage.id}
-                        className={`message-row ${chatMessage.sender}`}
-                    >
-
-                        {chatMessage.sender !== 'user' && (
-                            <div className="avatar assistant-avatar">
-                                ✈️
-                            </div>
-                        )}
-
+                {messages.map(
+                    (chatMessage) => (
 
                         <div
-                            className={`message-bubble ${chatMessage.sender}`}
+                            key={chatMessage.id}
+                            className={
+                                `message-row ${chatMessage.sender}`
+                            }
                         >
-                            {chatMessage.text}
+
+                            {chatMessage.sender !== 'user' && (
+
+                                <div className="avatar assistant-avatar">
+                                    ✈️
+                                </div>
+
+                            )}
+
+
+                            <div
+                                className={
+                                    `message-bubble ${chatMessage.sender}`
+                                }
+                            >
+                                {chatMessage.text}
+                            </div>
+
+
+                            {chatMessage.sender === 'user' && (
+
+                                <div className="avatar user-avatar">
+                                    👤
+                                </div>
+
+                            )}
+
                         </div>
 
-
-                        {chatMessage.sender === 'user' && (
-                            <div className="avatar user-avatar">
-                                👤
-                            </div>
-                        )}
-
-                    </div>
-
-                ))}
+                    )
+                )}
 
 
                 {/* =========================
-                    Loading indicator
+                    LOADING INDICATOR
                 ========================= */}
 
                 {loading && (
@@ -403,7 +419,7 @@ const ChatComponent: React.FC = () => {
 
 
             {/* =========================
-                Input area
+                INPUT
             ========================= */}
 
             <div className="input-section">
@@ -413,10 +429,14 @@ const ChatComponent: React.FC = () => {
                     type="text"
                     value={message}
                     onChange={(event) =>
-                        setMessage(event.target.value)
+                        setMessage(
+                            event.target.value
+                        )
                     }
                     onKeyDown={handleKeyDown}
-                    placeholder="Ask about flights, bookings, or cancellations..."
+                    placeholder={
+                        "Ask SkyMate about flights, bookings, or cancellations..."
+                    }
                     disabled={loading}
                     aria-label="Chat message"
                 />
@@ -425,7 +445,9 @@ const ChatComponent: React.FC = () => {
                 <button
                     type="button"
                     className="send-button"
-                    onClick={sendMessageToBackend}
+                    onClick={
+                        sendMessageToBackend
+                    }
                     disabled={
                         loading ||
                         !message.trim()
