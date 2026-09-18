@@ -1,1036 +1,811 @@
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-
-  font-family:
-          Inter,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Arial,
-          Helvetica,
-          sans-serif;
-
-  color: #172033;
-
-  background:
-          radial-gradient(
-                  circle at 10% 0%,
-                  rgba(37, 99, 235, 0.08),
-                  transparent 30%
-          ),
-          radial-gradient(
-                  circle at 90% 10%,
-                  rgba(14, 165, 233, 0.08),
-                  transparent 30%
-          ),
-          #f5f9ff;
-}
-
-#root {
-  width: 100%;
-  min-height: 100vh;
-}
-
-
-/* =========================================================
+/* =========================
    APP SHELL
-========================================================= */
+   ========================= */
 
 .app-shell {
-  width: 100%;
   min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
+  background: #f5f7fb;
+  color: #172033;
 }
 
 
-/* =========================================================
+/* =========================
    TOP HEADER
-========================================================= */
+   ========================= */
 
 .top-header {
-  width: 100%;
-
-  min-height: 82px;
-
-  padding: 15px 42px;
+  height: 82px;
+  padding: 0 34px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  background:
-          linear-gradient(
-                  135deg,
-                  #082f5c 0%,
-                  #0b4f88 50%,
-                  #0878b9 100%
-          );
+  background: #ffffff;
+  border-bottom: 1px solid #e5e9f2;
 
-  color: white;
-
-  box-shadow:
-          0 8px 30px rgba(15, 76, 129, 0.18);
-
-  position: relative;
-  z-index: 10;
+  position: sticky;
+  top: 0;
+  z-index: 900;
 }
 
 
-/* =========================================================
+/* =========================
    BRAND
-========================================================= */
+   ========================= */
 
 .brand {
   display: flex;
   align-items: center;
-
   gap: 13px;
 }
 
 .brand-icon {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 14px;
+  border-radius: 13px;
 
-  background:
-          rgba(255, 255, 255, 0.14);
-
-  border:
-          1px solid rgba(255, 255, 255, 0.2);
-
-  box-shadow:
-          0 8px 20px rgba(0, 0, 0, 0.12);
+  background: #edf4ff;
+  color: #2463eb;
 }
 
 .brand-text {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .brand-name {
-  font-size: 25px;
-
+  font-size: 21px;
   font-weight: 800;
-
-  line-height: 1;
-
-  letter-spacing: -0.7px;
+  letter-spacing: -0.4px;
 }
 
 .brand-subtitle {
-  margin-top: 6px;
-
   font-size: 12px;
-
+  color: #7b8496;
   font-weight: 500;
-
-  letter-spacing: 0.7px;
-
-  color:
-          rgba(255, 255, 255, 0.72);
 }
 
 
-/* =========================================================
-   AI BADGE IN HEADER
-========================================================= */
+/* =========================
+   SKYMATE TOP BUTTON
+   ========================= */
 
 .assistant-badge {
+  border: 1px solid #dfe6f2;
+  background: #ffffff;
+
   display: flex;
   align-items: center;
+  gap: 11px;
 
-  gap: 9px;
+  padding: 8px 13px 8px 9px;
 
-  padding: 9px 14px;
+  border-radius: 15px;
 
-  border-radius: 13px;
+  cursor: pointer;
 
-  background:
-          rgba(255, 255, 255, 0.1);
-
-  border:
-          1px solid rgba(255, 255, 255, 0.18);
-
-  backdrop-filter: blur(8px);
+  transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease;
 }
 
-.assistant-badge > svg {
-  color: #bae6fd;
+.assistant-badge:hover {
+  transform: translateY(-1px);
+  border-color: #c8d5ed;
+  box-shadow: 0 8px 22px rgba(38, 70, 120, 0.1);
+}
+
+.assistant-badge.active {
+  border-color: #b8caf0;
+  background: #f7faff;
+}
+
+.assistant-badge-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #edf4ff;
+  color: #2463eb;
+}
+
+.assistant-badge-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
 }
 
 .assistant-badge-name {
-  display: block;
-
-  font-size: 13px;
-
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
+  color: #18243a;
 }
 
 .assistant-badge-text {
-  display: block;
+  font-size: 11px;
+  color: #7d8799;
+}
 
-  margin-top: 2px;
+.assistant-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
-  font-size: 10px;
+  margin-left: 4px;
 
-  color:
-          rgba(255, 255, 255, 0.65);
+  font-size: 11px;
+  font-weight: 700;
+  color: #667085;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #35b76b;
 }
 
 
-/* =========================================================
+/* =========================
    NAVIGATION
-========================================================= */
+   ========================= */
 
 .navigation {
-  width: 100%;
+  height: 58px;
 
   display: flex;
   align-items: center;
 
   gap: 7px;
 
-  padding: 11px 42px;
+  padding: 0 34px;
 
-  background: white;
-
-  border-bottom:
-          1px solid #e2eaf4;
-
-  box-shadow:
-          0 3px 12px rgba(15, 23, 42, 0.04);
-
-  position: sticky;
-  top: 0;
-
-  z-index: 9;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e9f2;
 }
 
 .nav-link {
+  height: 38px;
+
   display: inline-flex;
   align-items: center;
+  gap: 8px;
 
-  gap: 9px;
+  padding: 0 15px;
 
-  padding: 10px 17px;
+  border-radius: 9px;
 
-  border-radius: 10px;
+  color: #697386;
 
   text-decoration: none;
 
-  color: #536276;
-
-  font-size: 14px;
-
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
 
   transition:
           background 0.2s ease,
-          color 0.2s ease,
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-}
-
-.nav-link svg {
-  flex-shrink: 0;
+          color 0.2s ease;
 }
 
 .nav-link:hover {
-  color: #0b65a3;
-
-  background:
-          #edf7ff;
-
-  transform:
-          translateY(-1px);
+  background: #f3f6fb;
+  color: #2463eb;
 }
 
 .nav-link.active {
-  color: white;
-
-  background:
-          linear-gradient(
-                  135deg,
-                  #0d75b8,
-                  #07548f
-          );
-
-  box-shadow:
-          0 5px 15px rgba(7, 84, 143, 0.2);
+  background: #edf4ff;
+  color: #2463eb;
 }
 
 
-/* =========================================================
+/* =========================
    MAIN CONTENT
-========================================================= */
+   ========================= */
 
 .main-content {
-  width: 100%;
-
-  flex: 1;
-
-  min-width: 0;
-
-  padding: 32px 42px 20px;
+  min-height: calc(100vh - 140px);
 }
 
 
-/* =========================================================
-   AI ASSISTANT SECTION
-========================================================= */
+/* =========================
+   SKYMATE FLOATING WINDOW
+   ========================= */
 
-.assistant-section {
-  width: min(1100px, calc(100% - 84px));
+.skymate-wrapper {
+  position: fixed !important;
 
-  margin:
-          12px auto 42px;
+  right: 28px !important;
+  bottom: 28px !important;
 
-  padding: 30px;
+  width: 430px !important;
+  height: 620px !important;
 
-  border-radius: 24px;
+  z-index: 99999 !important;
 
-  background:
-          linear-gradient(
-                  145deg,
-                  #ffffff,
-                  #f7fbff
-          );
+  opacity: 0 !important;
+  visibility: hidden !important;
 
-  border:
-          1px solid #dbeafe;
+  pointer-events: none !important;
 
-  box-shadow:
-          0 18px 50px rgba(30, 64, 175, 0.1);
+  transform: translateY(15px) !important;
+
+  transition:
+          opacity 0.2s ease,
+          transform 0.2s ease,
+          visibility 0.2s ease;
+}
+
+.skymate-wrapper.open {
+  opacity: 1 !important;
+
+  visibility: visible !important;
+
+  pointer-events: auto !important;
+
+  transform: translateY(0) !important;
 }
 
 
-/* =========================================================
-   ASSISTANT SECTION HEADING
-========================================================= */
+/* =========================
+   SKYMATE WINDOW
+   ========================= */
 
-.assistant-section-heading {
-  display: flex;
-  align-items: center;
+.skymate-window {
+  width: 430px !important;
+  height: 620px !important;
 
-  margin-bottom: 20px;
-}
+  box-sizing: border-box;
 
-.assistant-label {
-  display: inline-flex;
-  align-items: center;
+  background: #ffffff;
 
-  gap: 6px;
-
-  margin-bottom: 7px;
-
-  color: #0878b9;
-
-  font-size: 11px;
-
-  font-weight: 800;
-
-  letter-spacing: 1.2px;
-}
-
-.assistant-label svg {
-  color: #0ea5e9;
-}
-
-.assistant-section-heading h2 {
-  margin: 0;
-
-  color: #14213d;
-
-  font-size: 25px;
-
-  font-weight: 800;
-
-  letter-spacing: -0.5px;
-}
-
-.assistant-section-heading p {
-  margin: 5px 0 0;
-
-  color: #64748b;
-
-  font-size: 13px;
-}
-
-
-/* =========================================================
-   CHAT APP
-========================================================= */
-
-.chat-app {
-  width: 100%;
-
-  height: 620px;
-
-  margin: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  background: white;
+  border: 1px solid #dce3ed;
 
   border-radius: 18px;
 
   overflow: hidden;
 
   box-shadow:
-          0 10px 35px rgba(0, 0, 0, 0.08);
-
-  border:
-          1px solid #dbeafe;
+          0 20px 55px rgba(15, 30, 55, 0.22),
+          0 5px 18px rgba(15, 30, 55, 0.10);
 }
 
 
-/* =========================================================
-   CHAT HEADER
-========================================================= */
+/* =========================
+   SKYMATE CHAT
+   ========================= */
 
-.chat-header {
-  min-height: 76px;
+.skymate-chat {
+  width: 100% !important;
+  height: 100% !important;
 
-  padding: 13px 19px;
+  min-width: 0 !important;
+  min-height: 0 !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  margin: 0 !important;
+  padding: 0 !important;
 
-  background:
-          linear-gradient(
-                  135deg,
-                  #0f4c81,
-                  #1677b8
-          );
+  box-sizing: border-box;
 
-  color: white;
-}
+  display: flex !important;
+  flex-direction: column !important;
 
-.header-title {
-  display: flex;
-  align-items: center;
+  overflow: hidden !important;
 
-  gap: 12px;
-}
+  background: #ffffff !important;
 
-.flight-icon {
-  width: 45px;
-  height: 45px;
+  border: 0 !important;
+  border-radius: 0 !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background:
-          rgba(255, 255, 255, 0.16);
-
-  font-size: 23px;
-}
-
-.header-title h1 {
-  margin: 0;
-
-  font-size: 19px;
-
-  font-weight: 750;
-
-  letter-spacing: -0.2px;
-}
-
-.header-title p {
-  margin: 4px 0 0;
-
-  font-size: 12px;
-
-  opacity: 0.82;
+  box-shadow: none !important;
 }
 
 
-/* =========================================================
-   CLEAR BUTTON
-========================================================= */
+/* =========================
+   HEADER
+   ========================= */
 
-.clear-button {
-  border:
-          1px solid rgba(255, 255, 255, 0.32);
+.skymate-chat .chat-header {
+  display: flex !important;
 
-  background:
-          rgba(255, 255, 255, 0.1);
+  flex: 0 0 70px !important;
 
-  color: white;
+  width: 100% !important;
+  height: 70px !important;
+  min-height: 70px !important;
 
-  padding: 8px 12px;
+  box-sizing: border-box;
 
-  border-radius: 9px;
+  align-items: center !important;
+  justify-content: space-between !important;
 
-  cursor: pointer;
+  padding: 10px 14px !important;
 
-  font-size: 12px;
+  margin: 0 !important;
 
-  transition:
-          background 0.2s ease,
-          transform 0.2s ease;
-}
+  background: #ffffff !important;
 
-.clear-button:hover:not(:disabled) {
-  background:
-          rgba(255, 255, 255, 0.2);
-
-  transform:
-          translateY(-1px);
-}
-
-.clear-button:disabled {
-  opacity: 0.5;
-
-  cursor: not-allowed;
+  border-bottom: 1px solid #e5e9f0 !important;
 }
 
 
-/* =========================================================
-   CHAT MESSAGES
-========================================================= */
+/* =========================
+   HEADER TITLE
+   ========================= */
 
-.messages-container {
-  flex: 1;
+.skymate-chat .header-title {
+  display: flex !important;
 
-  min-height: 0;
+  align-items: center !important;
 
-  padding: 22px;
+  gap: 10px !important;
 
-  overflow-y: auto;
+  min-width: 0 !important;
+}
 
-  overflow-x: hidden;
+.skymate-chat .flight-icon {
+  width: 38px !important;
+  height: 38px !important;
 
-  background:
-          radial-gradient(
-                  circle at top left,
-                  #eef7ff,
-                  transparent 40%
-          ),
-          #fbfdff;
+  flex: 0 0 38px !important;
 
-  scroll-behavior: smooth;
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 10px !important;
+
+  background: #edf4ff !important;
+}
+
+.skymate-chat .header-title h1 {
+  margin: 0 !important;
+
+  font-size: 15px !important;
+
+  line-height: 1.2;
+
+  font-weight: 800 !important;
+
+  color: #18243a !important;
+}
+
+.skymate-chat .header-title p {
+  margin: 3px 0 0 !important;
+
+  font-size: 10px !important;
+
+  line-height: 1.2;
+
+  color: #7b8496 !important;
 }
 
 
-/* =========================================================
-   CHAT SCROLLBAR
-========================================================= */
+/* =========================
+   CLEAR CHAT
+   ========================= */
 
-.messages-container::-webkit-scrollbar {
-  width: 7px;
+.skymate-chat .clear-button {
+  flex: 0 0 auto !important;
+
+  width: auto !important;
+
+  height: auto !important;
+
+  padding: 7px 9px !important;
+
+  margin: 0 !important;
+
+  border: 1px solid #dfe5ee !important;
+
+  border-radius: 8px !important;
+
+  background: #ffffff !important;
+
+  color: #647084 !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700 !important;
+
+  cursor: pointer !important;
+
+  white-space: nowrap !important;
 }
 
-.messages-container::-webkit-scrollbar-track {
+.skymate-chat .clear-button:hover:not(:disabled) {
+  background: #f4f7fb !important;
+
+  color: #2463eb !important;
+
+  border-color: #cbd6e7 !important;
+}
+
+
+/* =========================
+   MESSAGES
+   ========================= */
+
+.skymate-chat .messages-container {
+  flex: 1 1 auto !important;
+
+  width: 100% !important;
+  height: auto !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  box-sizing: border-box;
+
+  display: block !important;
+
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  margin: 0 !important;
+
+  padding: 16px !important;
+
+  background: #f8faff !important;
+}
+
+
+/* =========================
+   MESSAGE ROW
+   ========================= */
+
+.skymate-chat .message-row {
+  display: flex !important;
+
+  align-items: flex-end !important;
+
+  gap: 8px !important;
+
+  width: 100% !important;
+
+  margin: 0 0 12px !important;
+}
+
+.skymate-chat .message-row.user {
+  justify-content: flex-end !important;
+}
+
+
+/* =========================
+   AVATARS
+   ========================= */
+
+.skymate-chat .avatar {
+  width: 29px !important;
+  height: 29px !important;
+
+  flex: 0 0 29px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 50% !important;
+
+  font-size: 14px !important;
+}
+
+.skymate-chat .assistant-avatar {
+  background: #e9f1ff !important;
+}
+
+.skymate-chat .user-avatar {
+  background: #e9eef5 !important;
+}
+
+
+/* =========================
+   MESSAGE BUBBLES
+   ========================= */
+
+.skymate-chat .message-bubble {
+  max-width: 78% !important;
+
+  box-sizing: border-box;
+
+  padding: 10px 12px !important;
+
+  margin: 0 !important;
+
+  border-radius: 13px !important;
+
+  font-size: 13px !important;
+
+  line-height: 1.5 !important;
+
+  word-break: break-word !important;
+
+  overflow-wrap: anywhere !important;
+}
+
+.skymate-chat .message-bubble.assistant {
+  background: #ffffff !important;
+
+  color: #263248 !important;
+
+  border: 1px solid #e1e7f0 !important;
+
+  border-bottom-left-radius: 4px !important;
+}
+
+.skymate-chat .message-bubble.user {
+  background: #2463eb !important;
+
+  color: #ffffff !important;
+
+  border: none !important;
+
+  border-bottom-right-radius: 4px !important;
+}
+
+.skymate-chat .message-bubble.error {
+  background: #fff3f3 !important;
+
+  color: #c0392b !important;
+
+  border: 1px solid #ffd6d6 !important;
+}
+
+
+/* =========================
+   LOADING
+   ========================= */
+
+.skymate-chat .loading-message {
+  display: flex !important;
+
+  align-items: center !important;
+}
+
+.skymate-chat .typing-dots {
+  display: inline-flex !important;
+
+  gap: 2px;
+
+  margin-left: 4px;
+}
+
+.skymate-chat .typing-dots span {
+  animation: skymateTyping 1.2s infinite;
+}
+
+.skymate-chat .typing-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.skymate-chat .typing-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes skymateTyping {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+  }
+
+  30% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================
+   INPUT
+   ========================= */
+
+.skymate-chat .input-section {
+  flex: 0 0 auto !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  gap: 8px !important;
+
+  width: 100% !important;
+
+  box-sizing: border-box;
+
+  margin: 0 !important;
+
+  padding: 11px 12px !important;
+
+  background: #ffffff !important;
+
+  border-top: 1px solid #e5e9f0 !important;
+}
+
+.skymate-chat .input-section input {
+  flex: 1 1 auto !important;
+
+  min-width: 0 !important;
+
+  width: auto !important;
+
+  height: 40px !important;
+
+  box-sizing: border-box;
+
+  padding: 0 12px !important;
+
+  margin: 0 !important;
+
+  border: 1px solid #dce3ed !important;
+
+  border-radius: 10px !important;
+
+  outline: none !important;
+
+  font-size: 12px !important;
+
+  color: #202b3f !important;
+
+  background: #ffffff !important;
+}
+
+.skymate-chat .input-section input:focus {
+  border-color: #8eb1ef !important;
+
+  box-shadow:
+          0 0 0 3px rgba(36, 99, 235, 0.08) !important;
+}
+
+.skymate-chat .send-button {
+  flex: 0 0 auto !important;
+
+  width: auto !important;
+
+  height: 40px !important;
+
+  padding: 0 14px !important;
+
+  margin: 0 !important;
+
+  border: 0 !important;
+
+  border-radius: 10px !important;
+
+  background: #2463eb !important;
+
+  color: #ffffff !important;
+
+  font-size: 12px !important;
+
+  font-weight: 800 !important;
+
+  cursor: pointer !important;
+
+  white-space: nowrap !important;
+}
+
+.skymate-chat .send-button:hover:not(:disabled) {
+  background: #1e56d0 !important;
+}
+
+.skymate-chat .send-button:disabled {
+  opacity: 0.55 !important;
+
+  cursor: not-allowed !important;
+}
+
+
+/* =========================
+   INPUT HELP
+   ========================= */
+
+.skymate-chat .input-help {
+  flex: 0 0 auto !important;
+
+  width: 100% !important;
+
+  box-sizing: border-box;
+
+  margin: 0 !important;
+
+  padding: 0 13px 8px !important;
+
+  background: #ffffff !important;
+
+  color: #929aaa !important;
+
+  font-size: 10px !important;
+
+  text-align: right !important;
+}
+
+
+/* =========================
+   SCROLLBAR
+   ========================= */
+
+.skymate-chat .messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.skymate-chat .messages-container::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.messages-container::-webkit-scrollbar-thumb {
-  background: #c7d7e8;
+.skymate-chat .messages-container::-webkit-scrollbar-thumb {
+  background: #d5dce8;
 
   border-radius: 10px;
 }
 
-.messages-container::-webkit-scrollbar-thumb:hover {
-  background: #9eb5cb;
-}
 
+/* =========================
+   RESPONSIVE
+   ========================= */
 
-/* =========================================================
-   MESSAGE ROW
-========================================================= */
+@media (max-width: 700px) {
 
-.message-row {
-  display: flex;
+  .skymate-wrapper {
+    left: 12px !important;
+    right: 12px !important;
 
-  align-items: flex-end;
+    bottom: 12px !important;
 
-  gap: 9px;
-
-  margin-bottom: 17px;
-}
-
-.message-row.user {
-  justify-content: flex-end;
-}
-
-.message-row.assistant,
-.message-row.error {
-  justify-content: flex-start;
-}
-
-
-/* =========================================================
-   AVATAR
-========================================================= */
-
-.avatar {
-  width: 34px;
-  height: 34px;
-
-  min-width: 34px;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 15px;
-}
-
-.assistant-avatar {
-  background: #e0f2fe;
-
-  border:
-          1px solid #bae6fd;
-}
-
-.user-avatar {
-  background: #dbeafe;
-
-  border:
-          1px solid #bfdbfe;
-}
-
-
-/* =========================================================
-   MESSAGE BUBBLES
-========================================================= */
-
-.message-bubble {
-  max-width: 72%;
-
-  padding: 11px 15px;
-
-  border-radius: 15px;
-
-  font-size: 13px;
-
-  line-height: 1.55;
-
-  word-wrap: break-word;
-
-  overflow-wrap: anywhere;
-
-  white-space: pre-wrap;
-}
-
-.message-bubble.assistant {
-  background:
-          #eef6fc;
-
-  color: #1f2937;
-
-  border-bottom-left-radius: 4px;
-
-  border:
-          1px solid #e0edf8;
-}
-
-.message-bubble.user {
-  background:
-          linear-gradient(
-                  135deg,
-                  #1677b8,
-                  #0f4c81
-          );
-
-  color: white;
-
-  border-bottom-right-radius: 4px;
-
-  box-shadow:
-          0 5px 12px rgba(15, 76, 129, 0.12);
-}
-
-.message-bubble.error {
-  background:
-          #fff1f2;
-
-  color: #b42318;
-
-  border:
-          1px solid #fecdd3;
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading-message {
-  display: flex;
-
-  gap: 8px;
-
-  align-items: center;
-}
-
-.typing-dots {
-  display: inline-flex;
-
-  font-weight: bold;
-
-  letter-spacing: 2px;
-}
-
-.typing-dots span {
-  animation:
-          typing 1.2s infinite;
-}
-
-.typing-dots span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing-dots span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes typing {
-  0% {
-    opacity: 0.2;
+    width: auto !important;
+    height: calc(100vh - 100px) !important;
   }
 
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0.2;
+  .skymate-window {
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
 
-/* =========================================================
-   INPUT
-========================================================= */
+@media (max-width: 480px) {
 
-.input-section {
-  display: flex;
+  .skymate-wrapper {
+    left: 8px !important;
+    right: 8px !important;
 
-  gap: 10px;
+    bottom: 8px !important;
 
-  padding: 13px;
-
-  border-top:
-          1px solid #e5e7eb;
-
-  background: white;
-}
-
-.input-section input {
-  flex: 1;
-
-  min-width: 0;
-
-  padding: 11px 14px;
-
-  border:
-          1px solid #cbd5e1;
-
-  border-radius: 10px;
-
-  outline: none;
-
-  font-size: 13px;
-
-  color: #1f2937;
-
-  transition:
-          border-color 0.2s ease,
-          box-shadow 0.2s ease;
-}
-
-.input-section input::placeholder {
-  color: #94a3b8;
-}
-
-.input-section input:focus {
-  border-color: #1677b8;
-
-  box-shadow:
-          0 0 0 3px rgba(22, 119, 184, 0.1);
-}
-
-.input-section input:disabled {
-  background: #f8fafc;
-}
-
-
-/* =========================================================
-   SEND BUTTON
-========================================================= */
-
-.send-button {
-  padding: 0 17px;
-
-  border: none;
-
-  border-radius: 10px;
-
-  background:
-          linear-gradient(
-                  135deg,
-                  #1677b8,
-                  #0f4c81
-          );
-
-  color: white;
-
-  font-weight: 700;
-
-  font-size: 13px;
-
-  cursor: pointer;
-
-  transition:
-          transform 0.15s ease,
-          opacity 0.15s ease,
-          box-shadow 0.15s ease;
-}
-
-.send-button:hover:not(:disabled) {
-  transform:
-          translateY(-1px);
-
-  box-shadow:
-          0 5px 15px rgba(15, 76, 129, 0.2);
-}
-
-.send-button:disabled {
-  opacity: 0.5;
-
-  cursor: not-allowed;
-}
-
-
-/* =========================================================
-   INPUT HELP
-========================================================= */
-
-.input-help {
-  padding:
-          0 14px 9px;
-
-  text-align: right;
-
-  font-size: 10px;
-
-  color: #64748b;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 800px) {
-
-  .top-header {
-    padding:
-            14px 20px;
+    height: calc(100vh - 90px) !important;
   }
 
-  .navigation {
-    padding:
-            9px 20px;
-
-    overflow-x: auto;
+  .skymate-window {
+    border-radius: 15px;
   }
 
-  .nav-link {
-    white-space: nowrap;
-
-    padding:
-            9px 13px;
-
-    font-size: 13px;
+  .skymate-chat .header-title h1 {
+    font-size: 13px !important;
   }
 
-  .main-content {
-    padding:
-            24px 20px 10px;
+  .skymate-chat .header-title p {
+    display: none !important;
   }
 
-  .assistant-section {
-    width:
-            calc(100% - 40px);
+  .skymate-chat .clear-button {
+    font-size: 10px !important;
 
-    padding:
-            20px;
-
-    margin:
-            12px auto 30px;
-  }
-
-  .chat-app {
-    height: 600px;
-  }
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 550px) {
-
-  .top-header {
-    min-height: 72px;
-
-    padding:
-            12px 15px;
-  }
-
-  .brand-icon {
-    width: 42px;
-    height: 42px;
-  }
-
-  .brand-name {
-    font-size: 21px;
-  }
-
-  .brand-subtitle {
-    font-size: 10px;
-  }
-
-  .assistant-badge {
-    padding:
-            8px;
-  }
-
-  .assistant-badge-text {
-    display: none;
-  }
-
-  .navigation {
-    gap: 3px;
-
-    padding:
-            8px 12px;
-  }
-
-  .nav-link {
-    gap: 6px;
-
-    padding:
-            8px 10px;
-  }
-
-  .main-content {
-    padding:
-            18px 12px 8px;
-  }
-
-  .assistant-section {
-    width:
-            calc(100% - 24px);
-
-    padding:
-            15px;
-
-    border-radius: 18px;
-  }
-
-  .assistant-section-heading h2 {
-    font-size: 21px;
-  }
-
-  .chat-app {
-    height: 560px;
-
-    border-radius: 14px;
-  }
-
-  .chat-header {
-    min-height: 68px;
-
-    padding:
-            10px 12px;
-  }
-
-  .header-title h1 {
-    font-size: 16px;
-  }
-
-  .header-title p {
-    display: none;
-  }
-
-  .flight-icon {
-    width: 39px;
-    height: 39px;
-
-    font-size: 19px;
-  }
-
-  .clear-button {
-    font-size: 0;
-
-    padding: 8px 10px;
-  }
-
-  .clear-button::before {
-    content: "🧹";
-
-    font-size: 16px;
-  }
-
-  .messages-container {
-    padding:
-            15px;
-  }
-
-  .message-bubble {
-    max-width: 82%;
-
-    font-size: 12px;
-  }
-
-  .input-section {
-    padding:
-            9px;
-  }
-
-  .send-button {
-    padding:
-            0 12px;
-  }
-
-  .input-help {
-    display: none;
+    padding: 6px 7px !important;
   }
 }

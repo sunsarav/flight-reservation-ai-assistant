@@ -292,7 +292,7 @@ const ChatComponent: React.FC = () => {
 
 
     return (
-        <div className="chat-app">
+        <div className="skymate-chat">
 
             {/* =========================
                 CHAT HEADER
