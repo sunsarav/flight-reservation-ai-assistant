@@ -1,36 +1,48 @@
+/* =========================================================
+   FLIGHTS PAGE
+   Note: the bare `input` / `label` / `button` rules are now
+   scoped to .flights-page so they stop leaking into the chat.
+   ========================================================= */
+
 .flights-page {
   width: min(1280px, calc(100% - 44px));
   margin: 0 auto;
-  padding: 42px 0;
+  padding: 42px 0 56px;
 }
- 
+
 .page-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 22px;
+  margin-bottom: 26px;
 }
- 
+
+/* Sits over the photo hero, so it reads light */
 .page-header h1 {
   margin: 4px 0 8px;
-  color: #102033;
-  font-size: 36px;
-  line-height: 1.1;
+
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(8, 32, 40, 0.45);
 }
- 
+
 .page-header p {
   margin: 0;
-  color: #64748b;
+  color: rgba(242, 248, 247, 0.86);
+  text-shadow: 0 1px 10px rgba(8, 32, 40, 0.4);
 }
- 
+
 .page-label {
-  color: #0369a1 !important;
+  color: var(--mango-500) !important;
   font-size: 13px;
   font-weight: 800;
-  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
- 
+
 .refresh-button,
 .booking-form button,
 .tool-panel button {
@@ -38,105 +50,131 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 42px;
-  padding: 0 16px;
+  min-height: 44px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 8px;
-  color: white;
-  background: #0369a1;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--sea-600), var(--sea-500));
   font-weight: 700;
   cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
 }
- 
+
+.booking-form button:hover:not(:disabled),
+.tool-panel button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
 .refresh-button {
-  color: #0f3d56;
-  background: #e0f2fe;
+  color: var(--ink-900);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
- 
-button:disabled {
+
+.flights-page button:disabled {
   cursor: not-allowed;
   opacity: 0.58;
 }
- 
+
 .toast-message {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 18px;
   padding: 14px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 650;
 }
- 
+
 .toast-message.success {
-  color: #14532d;
-  background: #dcfce7;
+  color: var(--ok-text);
+  background: var(--ok-bg);
 }
- 
+
 .toast-message.error {
-  color: #991b1b;
-  background: #fee2e2;
+  color: var(--danger-text);
+  background: var(--danger-bg);
 }
- 
+
+/* =========================
+   DASHBOARD
+   ========================= */
+
 .dashboard-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
-  margin-bottom: 22px;
+  margin-bottom: 26px;
 }
- 
+
 .dashboard-summary div {
-  padding: 18px;
-  border: 1px solid #dbe6ef;
-  border-radius: 8px;
-  background: white;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
 }
- 
+
 .dashboard-summary span {
   display: block;
-  color: #64748b;
-  font-size: 13px;
+  color: var(--text-muted);
+  font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
- 
+
 .dashboard-summary strong {
   display: block;
   margin-top: 8px;
-  color: #102033;
-  font-size: 28px;
+
+  font-family: var(--font-display);
+  font-size: 34px;
+  color: var(--ink-900);
 }
- 
+
+/* =========================
+   LAYOUT
+   ========================= */
+
 .booking-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr) 350px;
   gap: 22px;
   align-items: start;
 }
- 
+
 .flight-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
   gap: 18px;
 }
- 
+
 .flight-card,
 .booking-form,
 .tool-panel {
-  border: 1px solid #dbe6ef;
-  border-radius: 8px;
-  background-color: white;
-  box-shadow: 0 10px 25px rgb(15 23 42 / 7%);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background-color: var(--paper);
+  box-shadow: var(--shadow-card);
 }
- 
+
 .flight-card {
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
- 
+
+.flight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 38px rgba(11, 42, 51, 0.14);
+}
+
 .flight-card.selected {
-  outline: 3px solid #7dd3fc;
+  outline: 3px solid var(--mango-500);
 }
- 
+
 .flight-card-header,
 .flight-card-footer {
   display: flex;
@@ -145,11 +183,11 @@ button:disabled {
   gap: 16px;
   padding: 17px 18px;
 }
- 
+
 .flight-card-header {
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--line-soft);
 }
- 
+
 .flight-number,
 .destination,
 .information-row,
@@ -158,36 +196,41 @@ button:disabled {
   align-items: center;
   gap: 12px;
 }
- 
+
 .flight-number h2 {
   margin: 0;
-  color: #102033;
-  font-size: 18px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: -0.3px;
+  color: var(--ink-900);
 }
- 
+
 .status-badge {
   flex: 0 0 auto;
-  padding: 5px 9px;
-  border-radius: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
   font-size: 12px;
   font-weight: 800;
 }
- 
+
 .status-badge.available {
-  color: #166534;
-  background-color: #dcfce7;
+  color: var(--ok-text);
+  background-color: var(--ok-bg);
 }
- 
+
 .status-badge.booked {
-  color: #991b1b;
-  background-color: #fee2e2;
+  color: var(--danger-text);
+  background-color: var(--danger-bg);
 }
- 
+
+/* Destination band — a slice of sky above each route */
 .destination {
   padding: 20px 18px;
-  color: #0369a1;
+  color: var(--sea-600);
+  background: linear-gradient(120deg, var(--sea-050) 0%, rgba(253, 241, 221, 0.6) 100%);
+  border-bottom: 1px solid var(--line-soft);
 }
- 
+
 .destination div,
 .information-row div,
 .price div,
@@ -195,171 +238,201 @@ button:disabled {
   display: flex;
   flex-direction: column;
 }
- 
+
 .destination span,
 .information-row span,
 .price span,
 .selected-flight span {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 13px;
 }
- 
+
 .destination strong,
 .information-row strong,
 .price strong,
 .selected-flight strong {
-  color: #1e293b;
+  color: var(--ink-900);
 }
- 
+
+.destination strong {
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
 .flight-information {
   display: grid;
   gap: 16px;
-  padding: 0 18px 20px;
+  padding: 18px 18px 20px;
 }
- 
+
 .information-row {
-  color: #64748b;
+  color: var(--text-muted);
 }
- 
+
 .flight-card-footer {
-  border-top: 1px solid #e2e8f0;
-  color: #0369a1;
-  background-color: #f8fafc;
+  border-top: 1px solid var(--line-soft);
+  color: var(--sea-600);
+  background-color: #f7fbfa;
 }
- 
+
 .price strong {
-  font-size: 18px;
+  font-size: 19px;
+  color: var(--ink-900);
 }
- 
+
 .icon-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border: 0;
-  border-radius: 8px;
-  color: #0f3d56;
-  background: #bae6fd;
+  border-radius: var(--radius-sm);
+  color: var(--ink-900);
+  background: var(--mango-500);
   cursor: pointer;
+  transition: filter 0.2s ease;
 }
- 
+
+.icon-button:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+/* =========================
+   FORMS
+   ========================= */
+
 .booking-form,
 .tool-panel {
   display: grid;
   gap: 16px;
-  padding: 20px;
+  padding: 22px;
 }
- 
+
 .booking-form {
   position: sticky;
-  top: 24px;
+  top: 160px;
 }
- 
+
 .panel-heading {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #0f3d56;
+  color: var(--sea-600);
 }
- 
+
 .panel-heading h2,
 .booking-results h2 {
   margin: 0;
-  color: #102033;
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--ink-900);
 }
- 
-label {
+
+.flights-page label {
   display: grid;
   gap: 7px;
-  color: #334155;
+  color: var(--ink-700);
   font-size: 14px;
   font-weight: 700;
 }
- 
-input {
+
+.flights-page input {
   width: 100%;
-  min-height: 42px;
-  padding: 0 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  color: #102033;
-  background: white;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  background: #f8fbfb;
 }
- 
-input:focus {
-  border-color: #0284c7;
-  outline: 3px solid #bae6fd;
+
+.flights-page input:focus {
+  border-color: var(--sea-500);
+  outline: 3px solid var(--sea-050);
+  background: var(--paper);
 }
- 
+
 .selected-flight {
   gap: 5px;
   padding: 14px;
-  border-radius: 8px;
-  background: #f1f5f9;
+  border-radius: var(--radius-sm);
+  background: var(--sea-050);
 }
- 
+
 .booking-tools {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-bottom: 26px;
 }
- 
+
 .danger-button {
-  background: #b91c1c !important;
+  background: var(--danger-solid) !important;
 }
- 
+
 .booking-results {
   display: grid;
   gap: 16px;
 }
- 
+
 .page-message {
   padding: 28px;
-  border: 1px solid #dbe6ef;
-  border-radius: 8px;
-  color: #64748b;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius);
+  color: var(--text-muted);
   text-align: center;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.86);
 }
- 
+
 .spin {
   animation: spin 0.8s linear infinite;
 }
- 
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
- 
+
+@media (prefers-reduced-motion: reduce) {
+  .flight-card,
+  .refresh-button {
+    transition: none;
+  }
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
 @media (max-width: 1100px) {
   .booking-layout,
   .booking-tools {
     grid-template-columns: 1fr;
   }
- 
+
   .booking-form {
     position: static;
   }
 }
- 
+
 @media (max-width: 650px) {
   .flights-page {
     width: min(100% - 24px, 1280px);
-    padding: 28px 0;
+    padding: 28px 0 44px;
   }
- 
+
   .page-header {
     align-items: flex-start;
     flex-direction: column;
   }
- 
+
+  .page-header h1 {
+    font-size: 34px;
+  }
+
   .dashboard-summary {
     grid-template-columns: 1fr;
   }
 }
- 
- 

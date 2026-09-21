@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import './ChatComponent.css';
 
 type MessageSender = 'user' | 'assistant' | 'error';
 
@@ -292,7 +293,7 @@ const ChatComponent: React.FC = () => {
 
 
     return (
-        <div className="skymate-chat">
+        <div className="chat-app">
 
             {/* =========================
                 CHAT HEADER
