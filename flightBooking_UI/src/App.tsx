@@ -152,21 +152,30 @@ function App() {
                     <Route
                         path="/flights"
                         element={
-                            <AllFlightsPage view="all" />
+                            <AllFlightsPage
+                                key="all"
+                                view="all"
+                            />
                         }
                     />
 
                     <Route
                         path="/available"
                         element={
-                            <AllFlightsPage view="available" />
+                            <AllFlightsPage
+                                key="available"
+                                view="available"
+                            />
                         }
                     />
 
                     <Route
                         path="/bookings"
                         element={
-                            <AllFlightsPage view="bookings" />
+                            <AllFlightsPage
+                                key="bookings"
+                                view="bookings"
+                            />
                         }
                     />
 
