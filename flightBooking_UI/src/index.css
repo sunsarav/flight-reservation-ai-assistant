@@ -1,41 +1,93 @@
+/* =========================================================
+   SKYBOOK — GLOBAL TOKENS
+   Palette: deep sea-teal + mango, on a cool mist paper.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Core palette */
+    --ink-900: #0b2a33;
+    --ink-700: #14424e;
+    --sea-600: #0e7c86;
+    --sea-500: #14929b;
+    --sea-050: #e4f2f1;
+    --mango-500: #f2a541;
+    --mango-050: #fdf1dd;
+
+    /* Surfaces */
+    --mist: #eef5f4;
+    --paper: #ffffff;
+    --paper-veil: rgba(255, 255, 255, 0.9);
+    --line: #d5e4e3;
+    --line-soft: #e6efee;
+
+    /* Text */
+    --text: #12303a;
+    --text-muted: #5c7480;
+    --text-on-dark: #f2f8f7;
+
+    /* Status */
+    --ok-text: #14603f;
+    --ok-bg: #def3e7;
+    --warn-text: #8a4b12;
+    --danger-text: #97303c;
+    --danger-bg: #fbe5e7;
+    --danger-solid: #b23a48;
+
+    /* Shape */
+    --radius-sm: 10px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --shadow-card: 0 14px 30px rgba(11, 42, 51, 0.09);
+    --shadow-float: 0 24px 60px rgba(8, 32, 40, 0.3);
+
+    /* Type */
+    --font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+    --font-body: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Destination photo.
+       Drop a wide image at  public/images/hero.jpg
+       If it is missing, the gradient underneath shows instead. */
+    --photo-hero: url(/images/hero.jpg);
+}
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-width: 320px;
-  min-height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-width: 320px;
+    min-height: 100%;
 }
 
 html {
-  font-family:
-          Inter,
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+    font-family: var(--font-body);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
 
-  background-color: #f4f7fb;
-
-  color: #1e293b;
+    background-color: var(--mist);
+    color: var(--text);
 }
 
 button,
 input {
-  font: inherit;
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid var(--mango-500);
+    outline-offset: 2px;
 }
